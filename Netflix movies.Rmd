@@ -1,0 +1,151 @@
+---
+title: "Netflix movies"
+author: "Anestis"
+date: "14/7/2020"
+output: html_document
+---
+```{r Basic overview of the project}
+library(tidyverse)
+summary(df)
+```
+```{r # What is the most prevailing type in netflix}
+
+by_type <- df %>% 
+  select(type)
+
+
+ggplot(by_type, aes(x = type,
+                    y = prop.table(stat(count)),
+                    label = scales::percent(prop.table(stat(count)))))+ geom_text(
+    vjust = -0.5,
+    position = position_dodge(.9),
+    size = 3,
+    stat = 'count'
+  ) + geom_bar(position = position_dodge()) +
+  scale_y_continuous(labels = scales::percent) + labs(
+    title = 'What is the most prevailing type of entertainment',
+    subtitle = 'At Netflix',
+    x = 'Category',
+    y = 'Percent'
+  ) +
+  theme_bw()
+```
+
+```{r What is the release_year with the most movies in netflix}
+from12_to16 <- df %>% 
+  select(type, release_year) %>% 
+  filter(type == 'Movie' & release_year >= 2012 & release_year <= 2020)
+
+ggplot(from12_to16, aes(
+      x = release_year,
+      y = prop.table(stat(count)),
+      label = scales::percent(prop.table(stat(count))
+                              ))) + 
+  geom_text(
+    size = 3,
+    position = position_dodge(.9),
+    stat = 'count',
+    vjust = -0.5
+  ) + geom_bar(position = position_dodge()) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = 'Release_year',
+       y = 'Percent of success',
+       title = 'What is the release_year with the most movies',
+       subtitle = 'At Netflix') +
+  theme_bw()
+```
+After that i think it is wise to analyze what happened in the year 2017 
+
+```{r What happened in the year 2017}
+potential_factors <- df %>% 
+  select(type, country, release_year, listed_in, rating) %>% 
+  filter(release_year == 2017)
+```
+
+```{r What are the countries with the most movies}
+unique(potential_factors$country)
+
+# Beacause there are a lot of countries we will split them into :
+# 1. Latin America
+
+Latin_america <- potential_factors %>% 
+filter(country == 'Argentina' | country == 'Chile' | country =='Peru' | country == 'Uruguay' | country == 'Brazil')
+
+# What countries of latin america have the highest percentage of movies
+
+ggplot(Latin_america, aes(
+  x = country,
+  y = prop.table(stat(count)),
+  label = scales::percent(prop.table(stat(count)))
+)) + geom_bar(position = position_dodge()) +
+  geom_text(
+    size = 3 ,
+    position = position_dodge(.9),
+    stat = 'count',
+    vjust = -0.5
+  ) + scale_y_continuous(labels = scales::percent) + labs(
+    x = 'Countries of Latin America',
+    y = 'Percentage of success',
+    title = 'What countries of latin america have the highest percentage of movies') +
+  theme_bw()
+
+# 2. Europe
+Europe <- potential_factors %>% 
+  filter(country == 'Spain' | country =='Germany' | country =='Italy' | country =='Turkey' | country =='Denmark' | country =='Norway' |country == 'Sweden' | country =='France' |country == 'Belgium' | country =='Switzerland')
+
+ggplot(Europe, aes(
+  x = country,
+  y = prop.table(stat(count)),
+  label = scales::percent(prop.table(stat(count)))
+)) + geom_bar(position = position_dodge()) +
+  geom_text(
+    size = 3 ,
+    position = position_dodge(.9),
+    stat = 'count',
+    vjust = -0.5
+  ) + scale_y_continuous(labels = scales::percent) + labs(
+    x = 'Countries of Europe',
+    y = 'Percentage of success',
+    title = 'What countries of Europe have the highest percentage of movies') +
+  theme_bw()
+
+# 3. US
+
+US <- potential_factors %>% 
+  filter(country == 'United States' | country =='Mexico' | country =='Canada')
+
+ggplot(US, aes(
+  x = country,
+  y = prop.table(stat(count)),
+  label = scales::percent(prop.table(stat(count)))
+)) + geom_bar(position = position_dodge()) +
+  geom_text(
+    size = 3 ,
+    position = position_dodge(.9),
+    stat = 'count',
+    vjust = -0.5
+  ) + scale_y_continuous(labels = scales::percent) + labs(
+    x = 'Countries of US',
+    y = 'Percentage of success',
+    title = 'What countries of US have the highest percentage of movies') +
+  theme_bw()
+
+Asia <- potential_factors %>% 
+  filter(country == 'Indonesia' | country =='India' | country =='Thailand' | country =='Taiwan' | country == 'Russia' | country == 'Japan' | country =='Malaysia' | country =='China' | country == 'Philippines' | country == 'Hong Kong' | country == 'Korea' | country == 'South Korea' | country == 'Singapore')
+
+ggplot(Asia, aes(
+  x = country,
+  y = prop.table(stat(count)),
+  label = scales::percent(prop.table(stat(count)))
+)) + geom_bar(position = position_dodge()) +
+  geom_text(
+    size = 3 ,
+    position = position_dodge(.9),
+    stat = 'count',
+    vjust = -0.5
+  ) + scale_y_continuous(labels = scales::percent) + labs(
+    x = 'Countries of Asia',
+    y = 'Percentage of success',
+    title = 'What countries of Asia have the highest percentage of movies') +
+  theme_bw()
+```
