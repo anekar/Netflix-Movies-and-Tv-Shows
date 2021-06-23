@@ -5,7 +5,8 @@ General information of the project.
 
 In this project i tried to analyze the most seen movies and Tv shows that Netflix provides. The data are  collected from Flixable which is a third-party Netflix search engine.
 
-<br> <br>
+<br> 
+<br>
 
 - Developed with the R Programming Programming Language
 - With RStudio as Integrated Development Environment <br>
